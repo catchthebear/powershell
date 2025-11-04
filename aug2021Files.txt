@@ -1,0 +1,16 @@
+# Define the target date
+$TargetDate = Get-Date "2021-08-12"
+
+# Specify the directory to search. '.' means the current directory.
+# You can change it to a specific path like "C:\Users\YourUsername\Documents"
+$SearchDirectory = "."
+
+# Specify the output file path
+$OutputFilePath = "E:\Root\Slack\SlackResults\files_dated_2021-08-12.txt"
+
+# Find files that were last written on the target date and write to a file
+Get-ChildItem -Path $SearchDirectory -Recurse -File |
+    Where-Object { $_.LastWriteTime.Date -eq $TargetDate.Date } |
+    Select-Object FullName, LastWriteTime > $OutputFilePath
+
+Write-Host "File search complete. Results saved to: $($OutputFilePath)"
