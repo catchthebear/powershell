@@ -1,0 +1,23 @@
+# Specify the directory to search. '.' means the current directory.
+# You can change it to a specific path like "C:\Users\YourUsername\Documents"
+$SearchDirectory = "."
+
+# Define the file name pattern to search for.
+# Examples:
+# "*.txt"                 - Finds all files with the .txt extension.
+# "report_*.log"          - Finds files starting with "report_" and ending with .log.
+# "*important*"           - Finds files whose names contain the word "important".
+# "document??.docx"       - Finds files like "document01.docx", "documentAB.docx", etc.
+# "specific_file_name.zip" - Finds a file with an exact name.
+$FileNamePattern = "*.txt" # <<<--- CHANGE THIS TO YOUR DESIRED FILE NAME PATTERN
+
+# Specify the output file path
+$OutputFilePath = "found_files_by_name.txt" # <<<--- CHANGE THIS IF YOU WANT A DIFFERENT OUTPUT FILE NAME
+
+# Find files matching the name pattern and write to a file
+Get-ChildItem -Path $SearchDirectory -Recurse -File |
+    Where-Object { $_.Name -like $FileNamePattern } |
+    Select-Object FullName, Name, LastWriteTime | # Selected FullName, Name, and LastWriteTime for context
+    Out-File -Path $OutputFilePath -Encoding UTF8
+
+Write-Host "File search complete. Results saved to: $($OutputFilePath)"
